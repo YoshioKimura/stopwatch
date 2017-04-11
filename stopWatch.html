@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <title>Stopwatch</title>
+    <style>
+        body {
+            background: #e0e0e0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .a {
+            color: #00aaff;
+            font-size: 40px;
+            margin: 40px auto;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .btn {
+            display: inline-block;
+            width: 100px;
+            padding: 7px;
+            margin: 0px auto;
+            border-radius: 5px;
+            box-shadow: 0 4px 0 #0088cc;
+            color: #fff;
+            background: #00aaff;
+            cursor: pointer;
+        }
+
+        .b {
+            display: inline-block;
+            width: 100px;
+            padding: 7px;
+            margin-left: 50px;
+            border-radius: 5px;
+            margin: 0 auto;
+            box-shadow: 0 4px 0 #0088cc;
+            color: #fff;
+            background: #00aaff;
+            cursor: pointer;
+        }
+
+        #reset,
+        #start {
+            width: 100px;
+            padding: 7px;
+            box-shadow: 0 4px 0 #0088cc;
+            border-radius: 5px;
+            margin: 0 auto;
+            color: #fff;
+            background: #00aaff;
+            cursor: pointer;
+            position: relative;
+            left: 30px;
+            top: 30px;
+        }
+
+        .btn+.btn {
+            /*margin-left: 10px;*/
+        }
+
+        .btn.active {
+            opacity: 1.0;
+        }
+
+        .btn.inactive {
+            opacity: 0.5;
+        }
+
+        .aaa,
+        .bbb {
+            display: flex;
+            margin: 10px auto;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .timer {
+            margin: 30px;
+            paddin: 30px;
+        }
+
+        .timerArea {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+    <select name="走る人の数を選んで下さい" id="runNum">
+  <option value="0">走る人の数を選んで下さい</option>
+  <option value="1">１人</option>
+  <option value="2">２人</option>
+  <option value="3">３人</option>
+  <option value="4">４人</option>
+</select>
+
+
+    <div class="xxx" width="100%" height="400px">
+        <div class="timerArea" id="parentArea">
+        </div>
+    </div>
+
+    <div class="aaa">
+        <!-- <div id="timerText1" class="a">0.00</div>
+        <div id="timerText2" class="a">0.00</div> -->
+        <!-- <div id="timerText3" class="a">0.00</div>
+        <div id="timerText4" class="a">0.00</div>
+        <div id="timerText5" class="a">0.00</div>
+        <div id="timerText6" class="a">0.00</div> -->
+    </div>
+    <div class="bbb">
+        <div id="start">ALL START</div>
+        <div id="reset">RESET</div>
+    </div>
+
+    <script>
+        'use strict';
+        $('#runNum').on('change', function() {
+            var runNum = $('#runNum').val();
+            appearTimerText();
+        });
+
+        var appearTimerText = function() {
+            var parentArea = $('#parentArea').get(0);
+            var runNum = $("#runNum").val();
+            runNum = Number(runNum);
+            console.log(runNum);
+            $('#parentArea').html("");
+            for (var i = 1; i <= runNum; i++) {
+                console.log(i);
+                $('#parentArea').append(`<div class="aaa"><div class="timer"><div class="a" id="timerText${i}">0.00</div><div class="b" id="stop${i}">STOP</div></div></div>`);
+            }
+            yomikomi(runNum);
+        };
+
+        function yomikomi(runNum) {
+            var startTime;
+
+
+            var timerId1;
+            var timerId2;
+            var timerId3;
+            var timerId4;
+            var elapsedTime1 = 0;
+            var elapsedTime2 = 0;
+            var elapsedTime3 = 0;
+            var elapsedTime4 = 0;
+            var isRunning1 = false;
+            var isRunning2 = false;
+            var isRunning3 = false;
+            var isRunning4 = false;
+
+            var startButton = document.getElementById('start');
+
+            var stopButton1 = document.getElementById('stop1');
+            var stopButton2 = document.getElementById('stop2');
+            var stopButton3 = document.getElementById('stop3');
+            var stopButton4 = document.getElementById('stop4');
+
+
+            var resetButton = document.getElementById('reset');
+
+            var timerText1 = document.getElementById('timerText1');
+            var timerText2 = document.getElementById('timerText2');
+            var timerText3 = document.getElementById('timerText3');
+            var timerText4 = document.getElementById('timerText4');
+
+
+            function setButtonState(start, stop, reset) {
+                startButton.className = start ? 'btn active' : 'btn inactive';
+                stopButton1.className = stop ? 'btn active' : 'btn inactive';
+                stopButton2.className = stop ? 'btn active' : 'btn inactive';
+                resetButton.className = reset ? 'btn active' : 'btn inactive';
+            }
+
+            setButtonState(true, false, false);
+
+            startButton.addEventListener('click', function() {
+                if (isRunning1) return;
+                if (isRunning2) return;
+                if (isRunning3) return;
+                if (isRunning4) return;
+                isRunning1 = true;
+                isRunning2 = true;
+                isRunning3 = true;
+                isRunning4 = true;
+                startTime = Date.now(); // 1970/1/1 00:00:00からの経過ミリ秒
+
+                updateTimerText1();
+                updateTimerText2();
+                updateTimerText3();
+                updateTimerText4();
+                setButtonState(false, true, false);
+            });
+
+
+          stopButton1.addEventListener('click', function() {
+                if (!isRunning1) return;
+                isRunning1 = false;
+                elapsedTime1 += Date.now() - startTime;
+                clearTimeout(timerId1);
+                setButtonState(true, false, true);
+            });
+            if (runNum < 2) {
+              return;
+            }else{
+          stopButton2.addEventListener('click', function() {
+                if (!isRunning2) return;
+                isRunning2 = false;
+                elapsedTime2 += Date.now() - startTime;
+                clearTimeout(timerId2);
+                console.log(timerId1);
+                setButtonState(true, false, true);
+            });
+          }
+            if (runNum < 3) {
+              return;
+            }else{
+            stopButton3.addEventListener('click', function() {
+                if (!isRunning3) return;
+                isRunning3 = false;
+                elapsedTime3 += Date.now() - startTime;
+                clearTimeout(timerId3);
+                console.log(timerId1);
+                setButtonState(true, false, true);
+            });
+            }
+            if (runNum < 4) {
+              return;
+            }else{
+                stopButton4.addEventListener('click', function() {
+                    if (!isRunning4) return;
+                    isRunning4 = false;
+                    elapsedTime4 += Date.now() - startTime;
+                    clearTimeout(timerId4);
+
+                    setButtonState(true, false, true);
+                });
+            }
+
+            resetButton.addEventListener('click', function() {
+                if (isRunning1 || isRunning2 || isRunning3 || isRunning4) return;
+                timerText1.innerHTML = '0.00';
+                timerText2.innerHTML = '0.00';
+                timerText3.innerHTML = '0.00';
+                timerText4.innerHTML = '0.00';
+                elapsedTime1 = 0;
+                elapsedTime2 = 0;
+                elapsedTime3 = 0;
+                elapsedTime4 = 0;
+                setButtonState(true, false, false);
+            });
+
+            function updateTimerText1() {
+                timerId1 = setTimeout(function() {
+                    var t = Date.now() - startTime + elapsedTime1;
+                    timerText1.innerHTML = (t / 1000).toFixed(2);
+                    updateTimerText1();
+                }, 10);
+            }
+
+            function updateTimerText2() {
+                timerId2 = setTimeout(function() {
+                    var io = Date.now() - startTime + elapsedTime1;
+                    timerText2.innerHTML = (io / 1000).toFixed(2);
+                    updateTimerText2();
+                }, 10);
+            }
+
+            function updateTimerText3() {
+                timerId3 = setTimeout(function() {
+                    var io = Date.now() - startTime + elapsedTime1;
+                    timerText3.innerHTML = (io / 1000).toFixed(2);
+                    updateTimerText3();
+                }, 10);
+            }
+
+            function updateTimerText4() {
+                timerId4 = setTimeout(function() {
+                    var io = Date.now() - startTime + elapsedTime1;
+                    timerText4.innerHTML = (io / 1000).toFixed(2);
+                    updateTimerText4();
+                }, 10);
+            }
+        }
+    </script>
+</body>
+
+</html>
