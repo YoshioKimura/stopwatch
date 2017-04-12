@@ -12,7 +12,7 @@
             text-align: center;
         }
 
-        .a {
+        .timerTxt {
             color: #00aaff;
             font-size: 40px;
             margin: 40px auto;
@@ -31,7 +31,7 @@
             cursor: pointer;
         }
 
-        .b {
+        .stopBtn {
             display: inline-block;
             width: 100px;
             padding: 7px;
@@ -71,8 +71,8 @@
             opacity: 0.5;
         }
 
-        .aaa,
-        .bbb {
+        .startArea,
+        .stopReset {
             display: flex;
             margin: 10px auto;
             text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -99,20 +99,12 @@
 </select>
 
 
-    <div class="xxx" width="100%" height="400px">
+    <div width="100%" height="400px">
         <div class="timerArea" id="parentArea">
         </div>
     </div>
 
-    <div class="aaa">
-        <!-- <div id="timerText1" class="a">0.00</div>
-        <div id="timerText2" class="a">0.00</div> -->
-        <!-- <div id="timerText3" class="a">0.00</div>
-        <div id="timerText4" class="a">0.00</div>
-        <div id="timerText5" class="a">0.00</div>
-        <div id="timerText6" class="a">0.00</div> -->
-    </div>
-    <div class="bbb">
+    <div class="stopReset">
         <div id="start">ALL START</div>
         <div id="reset">RESET</div>
     </div>
@@ -132,7 +124,7 @@
             $('#parentArea').html("");
             for (var i = 1; i <= runnersCount; i++) {
                 console.log(i);
-                $('#parentArea').append(`<div class="aaa"><div class="timer"><div class="a" id="timerText${i}">0.00</div><div class="b" id="stop${i}">STOP</div></div></div>`);
+                $('#parentArea').append(`<div class="startArea"><div class="timer"><div class="timerTxt" id="timerText${i}">0.00</div><div class="stopBtn" id="stop${i}">STOP</div></div></div>`);
             }
             yomikomi(runnersCount);
         };
@@ -145,13 +137,13 @@
             var timerId3;
             var timerId4;
             var elapsedTime1 = 0;
-             var elapsedTime2 = 0;
-             var elapsedTime3 = 0;
-             var elapsedTime4 = 0;
-             var isRunning1 = false;
-             var isRunning2 = false;
-             var isRunning3 = false;
-             var isRunning4 = false;
+            var elapsedTime2 = 0;
+            var elapsedTime3 = 0;
+            var elapsedTime4 = 0;
+            var isRunning1 = false;
+            var isRunning2 = false;
+            var isRunning3 = false;
+            var isRunning4 = false;
 
 
             var startButton = document.getElementById('start');
@@ -198,7 +190,7 @@
             });
 
 
-          stopButton1.addEventListener('click', function() {
+            stopButton1.addEventListener('click', function() {
                 if (!isRunning1) return;
                 isRunning1 = false;
                 elapsedTime1 += Date.now() - startTime;
@@ -206,32 +198,32 @@
                 setButtonState(true, false, true);
             });
             if (runnersCount < 2) {
-              return;
-            }else{
-          stopButton2.addEventListener('click', function() {
-                if (!isRunning2) return;
-                isRunning2 = false;
-                elapsedTime2 += Date.now() - startTime;
-                clearTimeout(timerId2);
-                console.log(timerId1);
-                setButtonState(true, false, true);
-            });
-          }
+                return;
+            } else {
+                stopButton2.addEventListener('click', function() {
+                    if (!isRunning2) return;
+                    isRunning2 = false;
+                    elapsedTime2 += Date.now() - startTime;
+                    clearTimeout(timerId2);
+                    console.log(timerId1);
+                    setButtonState(true, false, true);
+                });
+            }
             if (runnersCount < 3) {
-              return;
-            }else{
-            stopButton3.addEventListener('click', function() {
-                if (!isRunning3) return;
-                isRunning3 = false;
-                elapsedTime3 += Date.now() - startTime;
-                clearTimeout(timerId3);
-                console.log(timerId1);
-                setButtonState(true, false, true);
-            });
+                return;
+            } else {
+                stopButton3.addEventListener('click', function() {
+                    if (!isRunning3) return;
+                    isRunning3 = false;
+                    elapsedTime3 += Date.now() - startTime;
+                    clearTimeout(timerId3);
+                    console.log(timerId1);
+                    setButtonState(true, false, true);
+                });
             }
             if (runnersCount < 4) {
-              return;
-            }else{
+                return;
+            } else {
                 stopButton4.addEventListener('click', function() {
                     if (!isRunning4) return;
                     isRunning4 = false;
