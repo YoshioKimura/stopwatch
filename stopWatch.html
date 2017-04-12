@@ -90,7 +90,7 @@
 </head>
 
 <body>
-    <select name="走る人の数を選んで下さい" id="runNum">
+    <select name="走る人の数を選んで下さい" id="runnersCount">
   <option value="0">走る人の数を選んで下さい</option>
   <option value="1">１人</option>
   <option value="2">２人</option>
@@ -119,40 +119,40 @@
 
     <script>
         'use strict';
-        $('#runNum').on('change', function() {
-            var runNum = $('#runNum').val();
+        $('#runnersCount').on('change', function() {
+            var runnersCount = $('#runnersCount').val();
             appearTimerText();
         });
 
         var appearTimerText = function() {
             var parentArea = $('#parentArea').get(0);
-            var runNum = $("#runNum").val();
-            runNum = Number(runNum);
-            console.log(runNum);
+            var runnersCount = $("#runnersCount").val();
+            runnersCount = Number(runnersCount);
+            console.log(runnersCount);
             $('#parentArea').html("");
-            for (var i = 1; i <= runNum; i++) {
+            for (var i = 1; i <= runnersCount; i++) {
                 console.log(i);
                 $('#parentArea').append(`<div class="aaa"><div class="timer"><div class="a" id="timerText${i}">0.00</div><div class="b" id="stop${i}">STOP</div></div></div>`);
             }
-            yomikomi(runNum);
+            yomikomi(runnersCount);
         };
 
-        function yomikomi(runNum) {
+        function yomikomi(runnersCount) {
             var startTime;
-
 
             var timerId1;
             var timerId2;
             var timerId3;
             var timerId4;
             var elapsedTime1 = 0;
-            var elapsedTime2 = 0;
-            var elapsedTime3 = 0;
-            var elapsedTime4 = 0;
-            var isRunning1 = false;
-            var isRunning2 = false;
-            var isRunning3 = false;
-            var isRunning4 = false;
+             var elapsedTime2 = 0;
+             var elapsedTime3 = 0;
+             var elapsedTime4 = 0;
+             var isRunning1 = false;
+             var isRunning2 = false;
+             var isRunning3 = false;
+             var isRunning4 = false;
+
 
             var startButton = document.getElementById('start');
 
@@ -205,7 +205,7 @@
                 clearTimeout(timerId1);
                 setButtonState(true, false, true);
             });
-            if (runNum < 2) {
+            if (runnersCount < 2) {
               return;
             }else{
           stopButton2.addEventListener('click', function() {
@@ -217,7 +217,7 @@
                 setButtonState(true, false, true);
             });
           }
-            if (runNum < 3) {
+            if (runnersCount < 3) {
               return;
             }else{
             stopButton3.addEventListener('click', function() {
@@ -229,7 +229,7 @@
                 setButtonState(true, false, true);
             });
             }
-            if (runNum < 4) {
+            if (runnersCount < 4) {
               return;
             }else{
                 stopButton4.addEventListener('click', function() {
